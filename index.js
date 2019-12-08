@@ -1,3 +1,11 @@
 var server = require("./server");
+var router = require("./router");
+var requestHandlers = require("./requestHandlers");
 
-server.start();
+var handle = {};
+handle["/"] = requestHandlers.start;
+handle["start"] = requestHandlers.start;
+handle["upload"] = requestHandlers.upload;
+handle["/favicon.ico"] = requestHandlers.nothing;
+
+server.start(router.route, handle);

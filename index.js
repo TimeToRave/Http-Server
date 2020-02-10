@@ -6,6 +6,7 @@ var handle = {};
 handle["/"] = requestHandlers.start;
 handle["start"] = requestHandlers.start;
 handle["upload"] = requestHandlers.upload;
+handle["//CalculateDeliveryPrice"] = requestHandlers.CalculateDeliveryPrice;
 handle["/favicon.ico"] = requestHandlers.nothing;
 
 server.start(router.route, handle);

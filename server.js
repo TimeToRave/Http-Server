@@ -1,17 +1,38 @@
 var http = require("http");
 var url = require("url");
+var qs = require('querystring');
 
 function start(route, handle) {
     function onRequest(request, response) {
-        var path = url.parse(request.url).pathname;
 
-        route(handle, path);
+        var body = '';
+        var post;
+        if (request.method == 'POST') {
+            request.on('data', function (data) {
+                body += data;
+				
+                if (body.length > 1e6)
+                    request.connection.destroy();
+            });
+
+            request.on('end', function () {
+                var post = qs.parse(body);
+                console.log("body");
+                console.log(body);
+				
+            });
+        }
+
+
+        var path = url.parse(request.url).pathname;
 
         response.writeHead(200, {
             "Content-Type": "text/plain"
         });
-        response.write("Hello World");
-        response.end();
+        route(handle, path, response);
+
+        // response.write("100");
+        // response.end();
     }
 
     var server = http.createServer(onRequest);
